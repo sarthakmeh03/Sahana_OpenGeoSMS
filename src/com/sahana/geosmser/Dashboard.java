@@ -24,8 +24,8 @@ import com.sahana.geosmser.GeoSMSService.IGeoSMSService;
 import com.sahana.geosmser.gps.MyLocation;
 import com.sahana.geosmser.gps.MyLocation.ProvideType;
 import com.sahana.geosmser.view.ReverseGeocoderView;
-import com.sahana.geosmser.view.SMSDeliveryView;
-import com.sahana.geosmser.view.SMSDeliveryView.HanMessageSentDialogPack;
+import com.sahana.geosmser.view.SMSDeliveryDialog;
+import com.sahana.geosmser.view.SMSDeliveryDialog.HanMessageSentDialogPack;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -41,6 +41,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -53,7 +57,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class Dashboard extends Activity {
+public class Dashboard extends FragmentActivity {
 
 	private LinearLayout layoutIncidentReport;
 	private LinearLayout layoutTaskDispatch;
@@ -85,7 +89,7 @@ public class Dashboard extends Activity {
     private HanMessageSentDialogPack hanMessageSentDialogPack;
     private HanSMSDeliveryDialog mHanSMSDeliveryDialog;
     private ReverseGeocoderView mReverseGeocoderView;
-    private SMSDeliveryView mSMSDeliveryView;
+    private SMSDeliveryDialog mSMSDeliveryView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -182,7 +186,8 @@ public class Dashboard extends Activity {
 		 
 		
 		 mReverseGeocoderView = new ReverseGeocoderView(this);
-		 mSMSDeliveryView = (SMSDeliveryView) layoutInflaterFactory.inflate(R.layout.sms_delivery_view, null);
+		 mSMSDeliveryView = new SMSDeliveryDialog(getApplicationContext());
+		 //mSMSDeliveryView = (SMSDeliveryView) layoutInflaterFactory.inflate(R.layout.sms_delivery_view, null);
 		 evtDialogDisableKeyBack = new DialogEvtDisableKeyBackOnKeyListener();
 	        hanMessageSentDialogPack = new HanMessageSentDialogPack();
 	        mHanSMSDeliveryDialog = new HanSMSDeliveryDialog();
@@ -216,11 +221,14 @@ public class Dashboard extends Activity {
 	            case DIALOG_SMS_DELIVERY:
 	                //LayoutInflater factory = LayoutInflater.from(this);
 	                //final View textEntryView = factory.inflate(R.layout.sms_delivery_view, null);
-	                return new AlertDialog.Builder(this)
-	                .setTitle(R.string.dialog_sahana_incident_delivery_title)	                
-	                .setView(mSMSDeliveryView)
-	                .setOnKeyListener(new DialogEvtDisableSMSDeliveryDialogKeyBackOnKeyListener())
-	                .create();
+//	                return new AlertDialog.Builder(this)
+//	                .setTitle(R.string.dialog_sahana_incident_delivery_title)	                
+//	                .setView(mSMSDeliveryView)
+//	                .setOnKeyListener(new DialogEvtDisableSMSDeliveryDialogKeyBackOnKeyListener())
+//	                .create();
+	            	FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+	                DialogFragment newFragment = new SMSDeliveryDialog(getApplicationContext());
+	                newFragment.show(ft, "openDialog");
 	            case DIALOG_SMS_DELIVERY_MESSAGESENDING:
 	                
 	            case DIALOG_SMS_DELIVERY_MESSAGESENT:
@@ -287,7 +295,7 @@ public class Dashboard extends Activity {
 	        super.onPrepareDialog(id, pDialog);
 	    }
 	    
-	    private class SMSDVEvtOnSourceBindingListene implements SMSDeliveryView.ISMSDeliveryRenderer.OnSourceBindingListener {
+	    private class SMSDVEvtOnSourceBindingListene implements SMSDeliveryDialog.ISMSDeliveryRenderer.OnSourceBindingListener {
 	        @Override
 	        public void onSourceBind(GeoSMSPack pack) {
 	            GeoSMSPack p = getCurrentSelectedGeoSMSPackForSMSDelivery();

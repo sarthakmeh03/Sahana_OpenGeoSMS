@@ -52,7 +52,7 @@ import com.sahana.geosmser.GeoSMSService.IGeoSMSService;
 import com.sahana.geosmser.gps.MyLocation;
 import com.sahana.geosmser.gps.MyLocation.ProvideType;
 import com.sahana.geosmser.view.*;
-import com.sahana.geosmser.view.SMSDeliveryView.HanMessageSentDialogPack;
+import com.sahana.geosmser.view.SMSDeliveryDialog.HanMessageSentDialogPack;
 
 public class TeamCommunication extends Activity{
     
@@ -66,7 +66,7 @@ public class TeamCommunication extends Activity{
     private TextView mTextWhereAreWeTitle, mTextWhereAmITitle, mTextWhereAreYouTitle;
     private LinearLayout mLayoutWhereAreWe, mLayoutWhereAmI, mLayoutWhereAreYou;
     
-    private SMSDeliveryView mSMSDeliveryView;
+    private SMSDeliveryDialog mSMSDeliveryView;
     private SMSQueryView mSMSQueryView;
     
     private HanMessageSentDialogPack hanMessageSentDialogPack;
@@ -175,7 +175,8 @@ public class TeamCommunication extends Activity{
         
         mReverseGeocoderView = new ReverseGeocoderView(this);
         
-        mSMSDeliveryView = (SMSDeliveryView) layoutInflaterFactory.inflate(R.layout.sms_delivery_view, null);
+       // mSMSDeliveryView = (SMSDeliveryView) layoutInflaterFactory.inflate(R.layout.sms_delivery_view, null);
+        mSMSDeliveryView = new SMSDeliveryDialog();
         evtDialogDisableKeyBack = new DialogEvtDisableKeyBackOnKeyListener();
         hanMessageSentDialogPack = new HanMessageSentDialogPack();
         mHanSMSDeliveryDialog = new HanSMSDeliveryDialog();
@@ -187,7 +188,7 @@ public class TeamCommunication extends Activity{
         mSMSQueryView.smsWriter.open();
     }
     
-    private class SMSDVEvtOnSourceBindingListene implements SMSDeliveryView.ISMSDeliveryRenderer.OnSourceBindingListener {
+    private class SMSDVEvtOnSourceBindingListene implements SMSDeliveryDialog.ISMSDeliveryRenderer.OnSourceBindingListener {
         @Override
         public void onSourceBind(GeoSMSPack pack) {
             GeoSMSPack p = getCurrentSelectedGeoSMSPackForSMSDelivery();
@@ -259,7 +260,7 @@ public class TeamCommunication extends Activity{
                 //final View textEntryView = factory.inflate(R.layout.sms_delivery_view, null);
                 return new AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_geosms_mylocation_delivery_title)
-                .setView(mSMSDeliveryView)
+         //       .setView(mSMSDeliveryView)
                 .setOnKeyListener(new DialogEvtDisableSMSDeliveryDialogKeyBackOnKeyListener())
                 .create();
             case WhereToMeet.DIALOG_SMS_DELIVERY_MESSAGESENDING:

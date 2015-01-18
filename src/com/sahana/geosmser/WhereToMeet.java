@@ -33,9 +33,9 @@ import com.sahana.geosmser.overlay.SingleLocationOverlay;
 import com.sahana.geosmser.overlay.IDel.IGeoSMSPackBinder;
 import com.sahana.geosmser.overlay.IDel.IMenuEvtOverlayLocation;
 import com.sahana.geosmser.view.GeoSMSInformationPanel;
-import com.sahana.geosmser.view.SMSDeliveryView;
+import com.sahana.geosmser.view.SMSDeliveryDialog;
 import com.sahana.geosmser.view.SMSQueryView;
-import com.sahana.geosmser.view.SMSDeliveryView.HanMessageSentDialogPack;
+import com.sahana.geosmser.view.SMSDeliveryDialog.HanMessageSentDialogPack;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -106,7 +106,7 @@ public class WhereToMeet extends MapActivity {
 	private GeoSMSServiceController geosmsServiceController;
 	
 	private LayoutInflater layoutInflaterFactory;
-	private SMSDeliveryView mSMSDeliveryView;
+	private SMSDeliveryDialog mSMSDeliveryView;
 	private GeoSMSPack curSelectedGeoSMSPackForSMSDelivery;
 	
 	private SMSQueryView mSMSQueryView;
@@ -303,7 +303,7 @@ public class WhereToMeet extends MapActivity {
 	            //final View textEntryView = factory.inflate(R.layout.sms_delivery_view, null);
 				return new AlertDialog.Builder(me)
 				.setTitle(R.string.dialog_geosms_delivery_title)
-				.setView(mSMSDeliveryView)
+			//	.setView(mSMSDeliveryView)
 				.setOnKeyListener(new DialogEvtDisableSMSDeliveryDialogKeyBackOnKeyListener())
 				.create();
 			case DIALOG_SMS_DELIVERY_MESSAGESENDING:
@@ -445,8 +445,8 @@ public class WhereToMeet extends MapActivity {
 		geosmsServiceController = new GeoSMSServiceController();
 		
 		layoutInflaterFactory = LayoutInflater.from(this);
-		mSMSDeliveryView = (SMSDeliveryView) layoutInflaterFactory.inflate(R.layout.sms_delivery_view, null);
-		
+		//mSMSDeliveryView = (SMSDeliveryView) layoutInflaterFactory.inflate(R.layout.sms_delivery_view, null);
+		mSMSDeliveryView = new SMSDeliveryDialog();
 		evtDialogDisableKeyBack = new DialogEvtDisableKeyBackOnKeyListener();
 		hanMessageSentDialogPack = new HanMessageSentDialogPack();
 		mHanSMSDeliveryDialog = new HanSMSDeliveryDialog();
@@ -1123,7 +1123,7 @@ public class WhereToMeet extends MapActivity {
 	}
 	
 	
-	private class SMSDVEvtOnSourceBindingListene implements SMSDeliveryView.ISMSDeliveryRenderer.OnSourceBindingListener {
+	private class SMSDVEvtOnSourceBindingListene implements SMSDeliveryDialog.ISMSDeliveryRenderer.OnSourceBindingListener {
 		@Override
 		public void onSourceBind(GeoSMSPack pack) {
 			GeoSMSPack p = getCurrentSelectedGeoSMSPackForSMSDelivery();
@@ -1139,7 +1139,7 @@ public class WhereToMeet extends MapActivity {
 				me.dismissDialog(DIALOG_SMS_DELIVERY);
 				if(!mSMSDeliveryView.getMessageFieldText().trim().equals("")
 				        || !mSMSDeliveryView.getPhoneFieldText().trim().equals("")
-				        || !mSMSDeliveryView.getReverseCodeFieldText().trim().equals("")
+				       // || !mSMSDeliveryView.getReverseCodeFieldText().trim().equals("")
 				) {
 					me.showDialog(DIALOG_SMS_DELIVERY_EXIT_SMS_CONFORM);
 				}
