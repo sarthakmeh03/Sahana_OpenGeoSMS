@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.EventListener;
 
 import com.OpenGeoSMS.GeoLocation;
+import com.sahana.geosmser.Dashboard;
 import com.sahana.geosmser.GeoSMSPack;
 import com.sahana.geosmser.R;
 import com.sahana.geosmser.TeamCommunication;
@@ -31,6 +32,7 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -117,8 +119,9 @@ public class SMSDeliveryDialog extends DialogFragment{
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
+	        clearSavedState();
 			hanMessageSent.sendEmptyMessage(TeamCommunication.DIALOG_SMS_DELIVERY_CANCEL);
-			
+			dismiss();
 		super.onDestroy();
 	}
 	

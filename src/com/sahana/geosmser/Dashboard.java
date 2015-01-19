@@ -229,6 +229,7 @@ public class Dashboard extends FragmentActivity {
 	            	FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 	                DialogFragment newFragment = new SMSDeliveryDialog(getApplicationContext(),new SMSDVEvtOnSourceBindingListene(),mHanSMSDeliveryDialog);
 	                newFragment.show(ft, "openDialog");
+	                break;
 	            case DIALOG_SMS_DELIVERY_MESSAGESENDING:
 	                
 	            case DIALOG_SMS_DELIVERY_MESSAGESENT:
