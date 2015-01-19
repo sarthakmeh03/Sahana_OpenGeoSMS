@@ -27,6 +27,7 @@ import com.sahana.geosmser.WhereToMeet;
 import com.sahana.geosmser.widget.AutoCompleteSMSTextView;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -89,7 +90,13 @@ public class SMSDeliveryDialog extends DialogFragment{
 		
 	public ISMSDeliveryRenderer.OnSourceBindingListener sourceBindingListener;
 	
-	public SMSDeliveryDialog(Context context) {
+	public SMSDeliveryDialog(Context context){
+		baseContext=context;
+	}
+	
+	public SMSDeliveryDialog(Context context,ISMSDeliveryRenderer.OnSourceBindingListener sourceBindingL,Handler handler) {
+		sourceBindingListener = sourceBindingL;
+		hanMessageSent = handler;
 		baseContext = context;
 	}	
     public SMSDeliveryDialog(){
@@ -111,7 +118,7 @@ public class SMSDeliveryDialog extends DialogFragment{
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 			hanMessageSent.sendEmptyMessage(TeamCommunication.DIALOG_SMS_DELIVERY_CANCEL);
-			unregisterSMSSendDeliveryReceiver();
+			
 		super.onDestroy();
 	}
 	
@@ -121,7 +128,7 @@ public class SMSDeliveryDialog extends DialogFragment{
 		super.onActivityCreated(savedInstanceState);        
 	}
 	
-    @Override
+	@Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	    Log.d("hi","first");
@@ -355,7 +362,6 @@ public class SMSDeliveryDialog extends DialogFragment{
 		contactNumber = autoedtPhoneNumber.getText().toString();
 		msgFieldString = edtMessage.getText().toString();
 		Log.d("msg",msgFieldString);
-		Log.d("msg",positionPack.getText());
 		positionPack.setText((msgFieldString != "") ? msgFieldString : null);
 	}
 	
@@ -397,7 +403,7 @@ public class SMSDeliveryDialog extends DialogFragment{
 	public void clearInputField() {
 		autoedtPhoneNumber.setText("");
 		edtMessage.setText("");
-		ttnReverseCodeShow.setChecked(false);
+		//ttnReverseCodeShow.setChecked(false);
 	}
 
 	private class SendSMSReceiver extends BroadcastReceiver {

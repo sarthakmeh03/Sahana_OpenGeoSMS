@@ -299,11 +299,11 @@ public class WhereToMeet extends MapActivity {
 	protected Dialog onCreateDialog(int id) {
 		switch(id) {
 			case DIALOG_SMS_DELIVERY:
-				//LayoutInflater factory = LayoutInflater.from(this);
-	            //final View textEntryView = factory.inflate(R.layout.sms_delivery_view, null);
+				LayoutInflater factory = LayoutInflater.from(this);
+	            final View textEntryView = factory.inflate(R.layout.sms_delivery_dialog, null);
 				return new AlertDialog.Builder(me)
 				.setTitle(R.string.dialog_geosms_delivery_title)
-			//	.setView(mSMSDeliveryView)
+				.setView(textEntryView)
 				.setOnKeyListener(new DialogEvtDisableSMSDeliveryDialogKeyBackOnKeyListener())
 				.create();
 			case DIALOG_SMS_DELIVERY_MESSAGESENDING:

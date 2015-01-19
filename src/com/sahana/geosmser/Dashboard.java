@@ -219,15 +219,15 @@ public class Dashboard extends FragmentActivity {
 	                return mReverseGeocoder;
 	                
 	            case DIALOG_SMS_DELIVERY:
-	                //LayoutInflater factory = LayoutInflater.from(this);
-	                //final View textEntryView = factory.inflate(R.layout.sms_delivery_view, null);
+//	                LayoutInflater factory = LayoutInflater.from(this);
+//	                final View textEntryView = factory.inflate(R.layout.sms_delivery_dialog, null);
 //	                return new AlertDialog.Builder(this)
 //	                .setTitle(R.string.dialog_sahana_incident_delivery_title)	                
-//	                .setView(mSMSDeliveryView)
+//	                .setView(textEntryView)
 //	                .setOnKeyListener(new DialogEvtDisableSMSDeliveryDialogKeyBackOnKeyListener())
 //	                .create();
 	            	FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-	                DialogFragment newFragment = new SMSDeliveryDialog(getApplicationContext());
+	                DialogFragment newFragment = new SMSDeliveryDialog(getApplicationContext(),new SMSDVEvtOnSourceBindingListene(),mHanSMSDeliveryDialog);
 	                newFragment.show(ft, "openDialog");
 	            case DIALOG_SMS_DELIVERY_MESSAGESENDING:
 	                

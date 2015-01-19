@@ -176,7 +176,7 @@ public class TeamCommunication extends Activity{
         mReverseGeocoderView = new ReverseGeocoderView(this);
         
        // mSMSDeliveryView = (SMSDeliveryView) layoutInflaterFactory.inflate(R.layout.sms_delivery_view, null);
-        mSMSDeliveryView = new SMSDeliveryDialog();
+        mSMSDeliveryView = new SMSDeliveryDialog(getApplicationContext());
         evtDialogDisableKeyBack = new DialogEvtDisableKeyBackOnKeyListener();
         hanMessageSentDialogPack = new HanMessageSentDialogPack();
         mHanSMSDeliveryDialog = new HanSMSDeliveryDialog();
@@ -256,11 +256,11 @@ public class TeamCommunication extends Activity{
                 return mReverseGeocoder;
                 
             case WhereToMeet.DIALOG_SMS_DELIVERY:
-                //LayoutInflater factory = LayoutInflater.from(this);
-                //final View textEntryView = factory.inflate(R.layout.sms_delivery_view, null);
+                LayoutInflater factory = LayoutInflater.from(this);
+                final View textEntryView = factory.inflate(R.layout.sms_delivery_dialog, null);
                 return new AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_geosms_mylocation_delivery_title)
-         //       .setView(mSMSDeliveryView)
+                .setView(textEntryView)
                 .setOnKeyListener(new DialogEvtDisableSMSDeliveryDialogKeyBackOnKeyListener())
                 .create();
             case WhereToMeet.DIALOG_SMS_DELIVERY_MESSAGESENDING:
