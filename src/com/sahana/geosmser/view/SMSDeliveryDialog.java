@@ -148,6 +148,8 @@ public class SMSDeliveryDialog extends DialogFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+    	
+    	getDialog().setTitle("SMS Delivery View");
     	Log.d("hi","hi3");
     	View view = inflater.inflate(R.layout.sms_delivery_dialog, container, false);
     	bindInflatedComponent(view);
