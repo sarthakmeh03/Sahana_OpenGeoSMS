@@ -36,12 +36,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.Contacts;
+import android.provider.Contacts.People;
+import android.provider.Contacts.Phones;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.support.v4.app.DialogFragment;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
@@ -80,7 +87,7 @@ public class SMSDeliveryDialog extends DialogFragment{
 	private SmsManager smsManager;
 	private AutoCompleteSMSTextView autoedtPhoneNumber;
 	private EditText edtMessage;
-	private Button btnSMSSend;
+	private Button btnSMSSend,btnContact;
 	private ToggleButton ttnReverseCodeShow;
 	private TextView tvMessageCounter, tv;
 	private Handler hanMessageSent;
@@ -195,14 +202,49 @@ public class SMSDeliveryDialog extends DialogFragment{
 		edtMessage = (EditText) view.findViewById(R.id.EditTextSMSMessage);
 		tvMessageCounter = (TextView) view.findViewById(R.id.TextViewSMSMessageCounter);
 		btnSMSSend = (Button) view.findViewById(R.id.ButtonSMSSend);
+		btnContact = (Button) view.findViewById(R.id.contact);
 	}
     
     private void initEvent() {
 		btnSMSSend.setOnClickListener(new EvtOnClickSMSDelivery());
 		autoedtPhoneNumber.setOnItemClickListener(new EvtOnItemClickAutoedtPhoneNumber());
 		autoedtPhoneNumber.addTextChangedListener(new DelContactTextWatcher());
-		edtMessage.addTextChangedListener(new DelMessageTextWatcher());		
+		edtMessage.addTextChangedListener(new DelMessageTextWatcher());	
+		btnContact.setOnClickListener(new EvtOnClickPickContact());
 	}
+    
+    private class EvtOnClickPickContact implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+			Intent it= new Intent(Intent.ACTION_PICK, Phone.CONTENT_URI);
+            startActivityForResult(it, 1);	
+            
+			
+		}
+    	
+    }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
+    	
+    	switch (requestCode) {
+            case 1:
+            	Uri contactData = data.getData();
+            	
+                Cursor c =  baseContext.getContentResolver().query(contactData, null,null, null, null);
+                if (c.moveToFirst()) {
+                    String phone = c.getString(c.getColumnIndexOrThrow(Phone.NUMBER));
+                    setPhoneFieldText(phone);
+                    updateFieldInfo();
+                    updateSendSMSButtonState();        
+            }
+        
+       }    
+    }
     
     protected void driveBindSource() {	
     	Log.d("position1","driveBind");
